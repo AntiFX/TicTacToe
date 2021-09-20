@@ -83,19 +83,34 @@ const tictactoe = (() => {
             const row1 = currentBoard.row1;
             const row2 = currentBoard.row2;
             const row3 = currentBoard.row3;
+            let allRows = Object.keys(currentBoard);
+            const topLeft = currentBoard[allRows[0]][0];
+            const topRight = currentBoard[allRows[0]][2]
+            const middle = currentBoard[allRows[1]][1]
+            const botRight = currentBoard[allRows[2]][2]
+            const botLeft = currentBoard[allRows[2]][0]
+            if(middle != null){
+                if(middle == topLeft && middle == botRight || middle==topRight && middle==botLeft){
+                    console.log(`${middle} won! by Diag`)
+                }
+            }
+
+
 
             for(let i = 0; i < 3; i++){
-                let allRows = Object.keys(currentBoard);
                 let thisRow = allRows[i];
                 let thisRowEle = currentBoard[thisRow];
                 let thisColumn = [currentBoard[allRows[0]][i], currentBoard[allRows[1]][i], currentBoard[allRows[2]][i]]
+                //Check Win state in rows
                 if(thisRowEle[0] == thisRowEle[1] && thisRowEle[1] == thisRowEle[2] && thisRowEle[0] != null){
                     console.log(`${thisRowEle[0]} won!`)
-                    //TODO create an end game state if a player wins
+                //check win state in columns
                 } else if(thisColumn[0] == thisColumn[1] && thisColumn[1] == thisColumn[2] && thisColumn[0] != null){
                     console.log(`${thisRowEle[0]} won! up and down`)
                 }
             }
+
+            //TODO create an end game state if a player wins
                 
         });
         const getBoardState = (() => {
