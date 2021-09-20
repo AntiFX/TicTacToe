@@ -85,13 +85,18 @@ const tictactoe = (() => {
             const row3 = currentBoard.row3;
 
             for(let i = 0; i < 3; i++){
-                thisRow = Object.keys(currentBoard)[i];
-                thisRowEle = currentBoard[thisRow];
+                let allRows = Object.keys(currentBoard);
+                let thisRow = allRows[i];
+                let thisRowEle = currentBoard[thisRow];
+                let thisColumn = [currentBoard[allRows[0]][i], currentBoard[allRows[1]][i], currentBoard[allRows[2]][i]]
                 if(thisRowEle[0] == thisRowEle[1] && thisRowEle[1] == thisRowEle[2] && thisRowEle[0] != null){
                     console.log(`${thisRowEle[0]} won!`)
                     //TODO create an end game state if a player wins
+                } else if(thisColumn[0] == thisColumn[1] && thisColumn[1] == thisColumn[2] && thisColumn[0] != null){
+                    console.log(`${thisRowEle[0]} won! up and down`)
                 }
             }
+                
         });
         const getBoardState = (() => {
             allSquares = document.querySelectorAll(".square");
