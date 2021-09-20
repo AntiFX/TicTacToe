@@ -13,9 +13,20 @@ const tictactoe = (() => {
         })
 
         const updateBoard = ((e) => {
-            chosenSquare = document.getElementById(e.currentTarget.id);
-            chosenSquare.innerText = player.turnTaken();
+            square = document.getElementById(e.currentTarget.id);
+            if(isSqaureAvailable(square) == true){
+                square.innerText = player.turnTaken();
+            }
         })
+
+        const isSqaureAvailable = ((square) => {
+            if(square.innerText == ""){
+                return true;
+            } else {
+                return false;
+            }
+        });
+
         return {
             create,
         };
