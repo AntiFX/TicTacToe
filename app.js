@@ -1,13 +1,17 @@
 const tictactoe = (() => {
     const gameBoard = (() => {
+        let currentBoard;
 
-        const currentBoard = {
+        const createBoard = (() => {
+            let newBoard = {
             row1: [null, null, null],
             row2: [null, null, null],
             row3: [null, null, null],
-        };
+            }
+            currentBoard = newBoard;
+        });
 
-        const create = (() =>{
+        const create = (() => {
             //creates a gameboard from 0 to everything
             const boardContainer = document.querySelector("#gameBoard");
             for(let i = 0; i < 9; i++){
@@ -18,7 +22,17 @@ const tictactoe = (() => {
                 gameSquare.addEventListener("click", updateBoard);
                 gameSquare.classList.add(`square${i}`);
             }
+            createBoard();
         })
+
+        const clearBoard = (() => {
+            const allSquares = [...document.querySelectorAll(".square")];
+            for(let i = 0; i < allSquares.length; i++){
+                allSquares[i].innerHTML = "";
+            }
+            createBoard();
+
+        });
 
         const updateBoard = ((e) => {
             square = document.getElementById(e.currentTarget.id);
@@ -53,6 +67,7 @@ const tictactoe = (() => {
         return {
             create,
             gameBoardState,
+            clearBoard,
         };
     })();
 
@@ -71,9 +86,16 @@ const tictactoe = (() => {
                 return symbols[1];
             }
         });
+
+        const reset = (() => {
+            turns = 1;
+        });
         
         
-        return {turnTaken};
+        return {
+            turnTaken,
+            reset,
+        };
     })();
 
 
@@ -91,11 +113,9 @@ const tictactoe = (() => {
             const botLeft = currentBoard[allRows[2]][0]
             if(middle != null){
                 if(middle == topLeft && middle == botRight || middle==topRight && middle==botLeft){
-                    console.log(`${middle} won! by Diag`)
+                    won(middle);
                 }
             }
-
-
 
             for(let i = 0; i < 3; i++){
                 let thisRow = allRows[i];
@@ -103,18 +123,24 @@ const tictactoe = (() => {
                 let thisColumn = [currentBoard[allRows[0]][i], currentBoard[allRows[1]][i], currentBoard[allRows[2]][i]]
                 //Check Win state in rows
                 if(thisRowEle[0] == thisRowEle[1] && thisRowEle[1] == thisRowEle[2] && thisRowEle[0] != null){
-                    console.log(`${thisRowEle[0]} won!`)
+                    won(thisRowEle[0]);
                 //check win state in columns
                 } else if(thisColumn[0] == thisColumn[1] && thisColumn[1] == thisColumn[2] && thisColumn[0] != null){
-                    console.log(`${thisRowEle[0]} won! up and down`)
+                    won(thisRowEle[0]);
                 }
             }
 
-            //TODO create an end game state if a player wins
+            
                 
         });
-        const getBoardState = (() => {
-            allSquares = document.querySelectorAll(".square");
+        const won = ((symbol) => {
+            //send a message that someone won
+            alert(`${symbol} won!`)
+            // clear the game_board
+            gameBoard.clearBoard();
+            //reset the player turns
+            player.reset();
+
             
         });
         
