@@ -127,7 +127,22 @@ const tictactoe = (() => {
                 //check win state in columns
                 } else if(thisColumn[0] == thisColumn[1] && thisColumn[1] == thisColumn[2] && thisColumn[0] != null){
                     won(thisRowEle[0]);
+                } 
+            }
+
+            nullValue = false;
+            for(let i=0; i<Object.keys(currentBoard).length; i++){
+                let thisRow = allRows[i];
+                let thisRowEle = currentBoard[thisRow];
+                for(let n=0; n < thisRowEle.length; n++){
+                    if(thisRowEle[n] == null){
+                        nullValue=true;
+                        break;
+                    }
                 }
+            }
+            if(nullValue == false){
+                won("tie");
             }
 
             
@@ -135,7 +150,7 @@ const tictactoe = (() => {
         });
         const won = ((symbol) => {
             //send a message that someone won
-            alert(`${symbol} won!`)
+            alertWin(symbol);
             // clear the game_board
             gameBoard.clearBoard();
             //reset the player turns
@@ -143,6 +158,14 @@ const tictactoe = (() => {
 
             
         });
+
+        const alertWin = ((symbol) => {
+            if(symbol == "X" || symbol == "O"){
+                alert(`${symbol} won!`);
+            } else {
+                alert("It was a tie!");
+            }
+        })
         
         return {
             checkWin,
