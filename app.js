@@ -1,6 +1,7 @@
 const tictactoe = (() => {
     const gameBoard = (() => {
         const create = (() =>{
+            //creates a gameboard from 0 to everything
             const boardContainer = document.querySelector("#gameBoard");
             for(let i = 0; i < 9; i++){
                 const gameSquare = document.createElement("div");
@@ -12,17 +13,33 @@ const tictactoe = (() => {
         })
 
         const updateBoard = ((e) => {
-            document.getElementById(e.currentTarget.id).innerText = "X";
+            chosenSquare = document.getElementById(e.currentTarget.id);
+            chosenSquare.innerText = player.turnTaken();
         })
         return {
             create,
         };
     })();
 
-    const playerFactory = (name, age) => {
+    const player = (() => {
+        let turns = 1;
+        const symbols = ["X", "O"];
+
+        const turnTaken = (() => {
+            turns++;
+            return playersTurn();
+        });
+        const playersTurn =(() => {
+            if(turns % 2 == 0){
+                return symbols[0];
+            } else if (turns % 2 != 0){
+                return symbols[1];
+            }
+        });
         
-        return {name, age};
-    };
+        
+        return {turnTaken};
+    })();
 
 
     const gameLogic = (() => {
@@ -33,7 +50,7 @@ const tictactoe = (() => {
 
     return {
         gameBoard,
-        playerFactory,
+        player,
         gameLogic,
     };
 })();
