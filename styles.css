@@ -4,6 +4,7 @@
     width: 100vw;
     justify-content: center;
     align-content: center;
+    background-color: coral;
 }
 #gameBoard{
     display: grid;
@@ -17,7 +18,7 @@
 }
 .square{
     display:grid;
-    background-color: gray;
+    background-color: lightcyan;
     justify-content: center;
     align-content: center;
 }
