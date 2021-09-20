@@ -1,0 +1,24 @@
+#gameBoard{
+    display: grid;
+    background-color: black;
+    width: 50vw;
+    height: 50vh;
+    grid-template-columns: 33.33% 33.33% 33.33%;
+    grid-template-rows: 33.33% 33.33% 33.33%;
+    grid-template-areas:
+        "topLeft topMid topRight"
+        "midLeft midMid midRight"
+        "bottomLeft bottomMid bottomRight";
+    justify-content: center;
+    align-content: center;
+}
+.square{
+    display:grid;
+    background-color: gray;
+    justify-content: center;
+    align-content: center;
+}
+#4{
+    border-style: solid;
+    border-color:black;
+}
