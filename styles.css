@@ -1,3 +1,10 @@
+#page{
+    display:grid;
+    height: 100vh;
+    width: 100vw;
+    justify-content: center;
+    align-content: center;
+}
 #gameBoard{
     display: grid;
     background-color: black;
@@ -5,10 +12,6 @@
     height: 50vh;
     grid-template-columns: 33.33% 33.33% 33.33%;
     grid-template-rows: 33.33% 33.33% 33.33%;
-    grid-template-areas:
-        "topLeft topMid topRight"
-        "midLeft midMid midRight"
-        "bottomLeft bottomMid bottomRight";
     justify-content: center;
     align-content: center;
 }
@@ -18,7 +21,15 @@
     justify-content: center;
     align-content: center;
 }
-#4{
+.square4{
     border-style: solid;
     border-color:black;
+}
+.square1, .square7{
+    border-right: solid;
+    border-left: solid;
+}
+.square3, .square5{
+    border-top: solid;
+    border-bottom: solid;
 }

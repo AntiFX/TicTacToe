@@ -9,6 +9,7 @@ const tictactoe = (() => {
                 gameSquare.classList.add("square");
                 boardContainer.appendChild(gameSquare);
                 gameSquare.addEventListener("click", updateBoard);
+                gameSquare.classList.add(`square${i}`);
             }
         })
 
