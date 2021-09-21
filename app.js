@@ -70,6 +70,9 @@ const tictactoe = (() => {
             clearBoard,
         };
     })();
+    const playerFactory = (name, symbol) => {
+        return { name, symbol };
+      };
 
     const player = (() => {
         let turns = 1;
