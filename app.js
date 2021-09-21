@@ -35,9 +35,9 @@ const tictactoe = (() => {
         });
 
         const updateBoard = ((e) => {
-            square = document.getElementById(e.currentTarget.id);
+            const square = document.getElementById(e.currentTarget.id);
             if(isSqaureAvailable(square) == true){
-                value = player.turnTaken();
+                let value = player.turnTaken();
                 square.innerText = value;
                 gameBoardState(parseInt(square.id), value);
             }
@@ -100,53 +100,47 @@ const tictactoe = (() => {
 
 
     const gameLogic = (() => {
-
         const checkWin = ((currentBoard) => {
-            const row1 = currentBoard.row1;
-            const row2 = currentBoard.row2;
-            const row3 = currentBoard.row3;
             let allRows = Object.keys(currentBoard);
-            const topLeft = currentBoard[allRows[0]][0];
-            const topRight = currentBoard[allRows[0]][2]
-            const middle = currentBoard[allRows[1]][1]
-            const botRight = currentBoard[allRows[2]][2]
-            const botLeft = currentBoard[allRows[2]][0]
-            if(middle != null){
-                if(middle == topLeft && middle == botRight || middle==topRight && middle==botLeft){
-                    won(middle);
-                }
-            }
-
+            let topLeft = currentBoard[allRows[0]][0];
+            let topRight = currentBoard[allRows[0]][2];
+            let middle = currentBoard[allRows[1]][1];
+            let botRight = currentBoard[allRows[2]][2];
+            let botLeft = currentBoard[allRows[2]][0];
+            let nullValue = false;
             for(let i = 0; i < 3; i++){
                 let thisRow = allRows[i];
                 let thisRowEle = currentBoard[thisRow];
-                let thisColumn = [currentBoard[allRows[0]][i], currentBoard[allRows[1]][i], currentBoard[allRows[2]][i]]
-                //Check Win state in rows
-                if(thisRowEle[0] == thisRowEle[1] && thisRowEle[1] == thisRowEle[2] && thisRowEle[0] != null){
+                //Check Win state in rows, columns and Diag
+                if(winLogic(currentBoard[allRows[i]][0], currentBoard[allRows[i]][1], currentBoard[allRows[i]][2]) == true){
                     won(thisRowEle[0]);
-                //check win state in columns
-                } else if(thisColumn[0] == thisColumn[1] && thisColumn[1] == thisColumn[2] && thisColumn[0] != null){
-                    won(thisRowEle[0]);
-                } 
-            }
-
-            nullValue = false;
-            for(let i=0; i<Object.keys(currentBoard).length; i++){
-                let thisRow = allRows[i];
-                let thisRowEle = currentBoard[thisRow];
-                for(let n=0; n < thisRowEle.length; n++){
-                    if(thisRowEle[n] == null){
-                        nullValue=true;
-                        break;
+                    return "game won";
+                } else if (winLogic(currentBoard[allRows[0]][i], currentBoard[allRows[1]][i], currentBoard[allRows[2]][i]) == true){
+                    won(currentBoard[allRows[0]][i]);
+                    return "game won";
+                } else if ((winLogic(topLeft, middle, botRight) == true) || (winLogic(topRight, middle, botLeft) == true)){
+                    won(middle);
+                    return "game won";
+                } else {
+                        for(let n=0; n < thisRowEle.length; n++){
+                            if(thisRowEle[n] === null){
+                                nullValue = true;
+                                break;
+                            }
+                        }
                     }
-                }
+                    if(nullValue == false){
+                        won("tie");
+                    }
             }
-            if(nullValue == false){
-                won("tie");
-            }
+        });
 
-            
-                
+        const winLogic = ((ele0, ele1, ele2) => {
+            if(ele0 === ele1 && ele1 === ele2 && ele0 === ele2 && ele1 !== null){
+                return true;
+            } else {
+                return false;
+            }
         });
         const won = ((symbol) => {
             //send a message that someone won
