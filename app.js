@@ -2,6 +2,11 @@ const tictactoe = (() => {
     const gameBoard = (() => {
         let currentBoard;
 
+        const updateResults = ((winText) => {
+            const element = document.getElementById("results");
+            element.innerHTML = winText;
+        })
+
         const createBoard = (() => {
             let newBoard = {
             row1: [null, null, null],
@@ -10,10 +15,21 @@ const tictactoe = (() => {
             }
             currentBoard = newBoard;
         });
+        const changePopUp = (() => {
+            const element = document.getElementById("popUpBackground").style;
+            const state = element.display;
+            if(state === "" || state === "flex"){
+                element.display = "none";
+            } else if(state === "none"){
+                element.display = "flex";
+            }
+        })
 
         const create = (() => {
             //creates a gameboard from 0 to everything
             const boardContainer = document.querySelector("#gameBoard");
+            document.getElementById("namesButton").addEventListener("click", gameLogic.namesInputted);
+            document.getElementById("resetButton").addEventListener("click", gameLogic.resetGame);
             for(let i = 0; i < 9; i++){
                 const gameSquare = document.createElement("div");
                 gameSquare.id = `${i}`;
@@ -68,15 +84,19 @@ const tictactoe = (() => {
             create,
             gameBoardState,
             clearBoard,
+            changePopUp,
+            updateResults,
         };
     })();
-    const playerFactory = (name, symbol) => {
-        return { name, symbol };
-      };
+
 
     const player = (() => {
         let turns = 1;
-        const symbols = ["X", "O"];
+
+        const playerFactory = (name, symbol) => {
+            let wins = 0;
+            return { name, symbol, wins };
+          };
 
         const turnTaken = (() => {
             turns++;
@@ -84,20 +104,22 @@ const tictactoe = (() => {
         });
         const playersTurn =(() => {
             if(turns % 2 == 0){
-                return symbols[0];
+                return firstPlayer.symbol;
             } else if (turns % 2 != 0){
-                return symbols[1];
+                return secondPlayer.symbol;
             }
         });
 
         const reset = (() => {
             turns = 1;
+            players = [];
         });
         
         
         return {
             turnTaken,
             reset,
+            playerFactory,
         };
     })();
 
@@ -131,10 +153,10 @@ const tictactoe = (() => {
                                 break;
                             }
                         }
-                    }
-                    if(nullValue == false){
-                        won("tie");
-                    }
+                    }        
+            }
+            if(nullValue == false){
+                won("tie");
             }
         });
 
@@ -152,20 +174,49 @@ const tictactoe = (() => {
             gameBoard.clearBoard();
             //reset the player turns
             player.reset();
-
             
         });
 
         const alertWin = ((symbol) => {
+            let winText = "Error";
             if(symbol == "X" || symbol == "O"){
-                alert(`${symbol} won!`);
+                if (symbol === firstPlayer.symbol){
+                    firstPlayer.wins++;
+                    winText =  `${firstPlayer.name} has won ${firstPlayer.wins} time(s)`;
+                } else if (symbol === secondPlayer.symbol){
+                    secondPlayer.wins++;
+                    winText = `${secondPlayer.name} has won ${secondPlayer.wins} time(s)`;
+                }
             } else {
-                alert("It was a tie!");
+                winText = "It was a tie!";
             }
+
+            gameBoard.updateResults(winText);
+        })
+
+        const namesInputted = (() => {
+            const temp1 = (document.getElementById("player1").value);
+            const temp2 = (document.getElementById("player2").value);
+            firstPlayer = player.playerFactory(temp1, "X");
+            secondPlayer = player.playerFactory(temp2, "O");
+            gameBoard.changePopUp();
+
+
+        });
+
+        const resetGame = (()=>{
+            player.reset();
+            firstPlayer = "";
+            secondPlayer = "";
+            gameBoard.clearBoard();
+            gameBoard.changePopUp();
+            gameBoard.updateResults("");
         })
         
         return {
             checkWin,
+            namesInputted,
+            resetGame,
         };
     })();
 
@@ -176,4 +227,6 @@ const tictactoe = (() => {
     };
 })();
 
+let firstPlayer = "";
+let secondPlayer = "";
 tictactoe.gameBoard.create();
