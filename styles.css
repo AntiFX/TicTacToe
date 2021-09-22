@@ -78,7 +78,7 @@ input{
     width: 50%;
     padding: 8px;
 }
-#namesButton, #resetButton{
+#namesButton, #resetButton, #playAgainButton{
     border-style: solid;
     border-color: orange;
     cursor: pointer;
@@ -90,10 +90,12 @@ input{
     margin-top: 25px;
     text-decoration:none;
 }
-#resetButton{
+#controlButtons{
+    display: flex;
     width: 50%;
     justify-self: center;
     text-align: center;
+    justify-content: space-between;
 }
 
 #results{

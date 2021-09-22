@@ -30,6 +30,8 @@ const tictactoe = (() => {
             const boardContainer = document.querySelector("#gameBoard");
             document.getElementById("namesButton").addEventListener("click", gameLogic.namesInputted);
             document.getElementById("resetButton").addEventListener("click", gameLogic.resetGame);
+            document.getElementById("playAgainButton").addEventListener("click", clearBoard);
+            
             for(let i = 0; i < 9; i++){
                 const gameSquare = document.createElement("div");
                 gameSquare.id = `${i}`;
@@ -47,7 +49,7 @@ const tictactoe = (() => {
                 allSquares[i].innerHTML = "";
             }
             createBoard();
-
+            gameOver = false;
         });
 
         const updateBoard = ((e) => {
@@ -73,7 +75,7 @@ const tictactoe = (() => {
         });
 
         const isSqaureAvailable = ((square) => {
-            if(square.innerText == ""){
+            if(square.innerText == "" && gameOver == false){
                 return true;
             } else {
                 return false;
@@ -168,12 +170,9 @@ const tictactoe = (() => {
             }
         });
         const won = ((symbol) => {
-            //send a message that someone won
             alertWin(symbol);
-            // clear the game_board
-            gameBoard.clearBoard();
-            //reset the player turns
             player.reset();
+            gameOver = true;
             
         });
 
@@ -190,7 +189,6 @@ const tictactoe = (() => {
             } else {
                 winText = "It was a tie!";
             }
-
             gameBoard.updateResults(winText);
         })
 
@@ -209,6 +207,7 @@ const tictactoe = (() => {
             firstPlayer = "";
             secondPlayer = "";
             gameBoard.clearBoard();
+            gameOver = false;
             gameBoard.changePopUp();
             gameBoard.updateResults("");
         })
@@ -227,6 +226,7 @@ const tictactoe = (() => {
     };
 })();
 
+let gameOver = false;
 let firstPlayer = "";
 let secondPlayer = "";
 tictactoe.gameBoard.create();
